@@ -43,6 +43,19 @@ spec:
           - name: license-file
             mountPath: /home/jenkins/.mvnrepository/net/sf/saxon/saxon-ee/9.4.0.6/saxon-license.lic
             subPath: "saxon-license.lic"
+          # Start copying from below line
+          script: |
+            #!/usr/bin/env bash
+            source .jx/variables.sh
+   
+            # modify the pom.xml
+            echo "upgrading the pom to version $VERSION"
+            #mvn versions:set -DnewVersion=$VERSION
+   
+            echo "checking /home/jenkins/.mvnrepository/net/sf/saxon/saxon-ee/9.4.0.6/ directory: "
+            ls -l /home/jenkins/.mvnrepository/net/sf/saxon/saxon-ee/9.4.0.6/
+            mvn -pl -documentation clean test
+            # End copying
         volumes:
         - name: maven-settings
           secret:
